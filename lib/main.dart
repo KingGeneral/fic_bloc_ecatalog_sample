@@ -1,11 +1,11 @@
+import 'package:flutter_ecatalog/module/login/view/login_view.dart';
+import 'package:flutter_ecatalog/state_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecatalog/bloc/add_product/add_product_bloc.dart';
 import 'package:flutter_ecatalog/bloc/products/products_bloc.dart';
 import 'package:flutter_ecatalog/data/datasources/auth_datasource.dart';
 import 'package:flutter_ecatalog/data/datasources/product_datasource.dart';
-import 'package:flutter_ecatalog/presentation/login_page.dart';
-import 'package:flutter_ecatalog/presentation/register_page.dart';
 
 import 'bloc/login/login_bloc.dart';
 import 'bloc/register/register_bloc.dart';
@@ -36,11 +36,12 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        navigatorKey: Get.navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const LoginPage(),
+        home: const LoginView(),
       ),
     );
   }

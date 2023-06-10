@@ -1,51 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecatalog/data/datasources/local_datasource.dart';
-import 'package:flutter_ecatalog/data/models/request/login_request_model.dart';
-import 'package:flutter_ecatalog/presentation/home_page.dart';
-import 'package:flutter_ecatalog/presentation/register_page.dart';
+import 'package:flutter_ecatalog/bloc/login/login_bloc.dart';
+import 'package:flutter_ecatalog/core.dart';
+import '../controller/login_controller.dart';
 
-import '../bloc/login/login_bloc.dart';
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  Widget build(context, LoginController controller) {
+    controller.view = this;
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController? emailController;
-  TextEditingController? passwordController;
-
-  @override
-  void initState() {
-    checkAuth();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-
-    super.initState();
-  }
-
-  void checkAuth() async {
-    final auth = await LocalDataSource().getToken();
-    if (auth.isNotEmpty) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) {
-        return const HomePage();
-      }));
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    emailController!.dispose();
-    passwordController!.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login Page'),
@@ -61,12 +25,12 @@ class _LoginPageState extends State<LoginPage> {
               height: 16,
             ),
             TextField(
-              controller: emailController,
+              controller: controller.emailController,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextField(
               obscureText: true,
-              controller: passwordController,
+              controller: controller.passwordController,
               decoration: const InputDecoration(labelText: 'Password'),
             ),
             const SizedBox(
@@ -82,8 +46,9 @@ class _LoginPageState extends State<LoginPage> {
                 return ElevatedButton(
                     onPressed: () {
                       final requestModel = LoginRequestModel(
-                          email: emailController!.text,
-                          password: passwordController!.text);
+                          email: controller.emailController!.text,
+                          password: LoginController
+                              .instance.passwordController!.text);
                       context.read<LoginBloc>().add(
                             DoLoginEvent(model: requestModel),
                           );
@@ -105,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.blue,
                   ));
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const HomePage();
+                    return const HomeView();
                   }));
                 }
               },
@@ -116,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return const RegisterPage();
+                  return const RegisterView();
                 }));
               },
               child: const Text('Belum punya akun? Register'),
@@ -126,4 +91,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  @override
+  State<LoginView> createState() => LoginController();
 }

@@ -2,40 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecatalog/bloc/add_product/add_product_bloc.dart';
 import 'package:flutter_ecatalog/bloc/products/products_bloc.dart';
-import 'package:flutter_ecatalog/data/datasources/local_datasource.dart';
-import 'package:flutter_ecatalog/data/models/request/product_request_model.dart';
-import 'package:flutter_ecatalog/presentation/login_page.dart';
+import 'package:flutter_ecatalog/core.dart';
+import '../controller/home_controller.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+  Widget build(context, HomeController controller) {
+    controller.view = this;
 
-class _HomePageState extends State<HomePage> {
-  TextEditingController? titleController;
-  TextEditingController? priceController;
-  TextEditingController? descriptionController;
-  @override
-  void initState() {
-    titleController = TextEditingController();
-    priceController = TextEditingController();
-    descriptionController = TextEditingController();
-    super.initState();
-    context.read<ProductsBloc>().add(GetProductsEvent());
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    titleController!.dispose();
-    priceController!.dispose();
-    descriptionController!.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
@@ -45,7 +20,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async {
               await LocalDataSource().removeToken();
               Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return const LoginPage();
+                return const LoginView();
               }));
             },
             icon: const Icon(Icons.logout),
@@ -91,15 +66,15 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextField(
-                        controller: titleController,
+                        controller: controller.titleController,
                         decoration: const InputDecoration(labelText: 'Title'),
                       ),
                       TextField(
-                        controller: priceController,
+                        controller: controller.priceController,
                         decoration: const InputDecoration(labelText: 'Price'),
                       ),
                       TextField(
-                        controller: descriptionController,
+                        controller: controller.descriptionController,
                         decoration:
                             const InputDecoration(labelText: 'Description'),
                         maxLines: 3,
@@ -123,9 +98,9 @@ class _HomePageState extends State<HomePage> {
                                 content: Text('Add Product Success')),
                           );
                           context.read<ProductsBloc>().add(GetProductsEvent());
-                          titleController!.clear();
-                          priceController!.clear();
-                          descriptionController!.clear();
+                          controller.titleController!.clear();
+                          controller.priceController!.clear();
+                          controller.descriptionController!.clear();
                           Navigator.pop(context);
                         }
                         if (state is AddProductError) {
@@ -144,9 +119,11 @@ class _HomePageState extends State<HomePage> {
                         return ElevatedButton(
                             onPressed: () {
                               final model = ProductRequestModel(
-                                title: titleController!.text,
-                                price: int.parse(priceController!.text),
-                                description: descriptionController!.text,
+                                title: controller.titleController!.text,
+                                price:
+                                    int.parse(controller.priceController!.text),
+                                description:
+                                    controller.descriptionController!.text,
                               );
 
                               context
@@ -164,4 +141,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  State<HomeView> createState() => HomeController();
 }
