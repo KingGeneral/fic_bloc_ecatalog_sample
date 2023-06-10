@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecatalog/bloc/auth/register/register_bloc.dart';
+// ignore: unused_import
 import 'package:flutter_ecatalog/core.dart';
 import 'package:flutter_ecatalog/data/models/request/register_request_model.dart';
 import 'package:flutter_ecatalog/module/login/view/login_view.dart';
