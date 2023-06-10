@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecatalog/bloc/add_product/add_product_bloc.dart';
-import 'package:flutter_ecatalog/bloc/products/products_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/add_product/add_product_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/get_products/products_bloc.dart';
 import 'package:flutter_ecatalog/core.dart';
+import 'package:flutter_ecatalog/data/models/request/product_request_model.dart';
+import 'package:flutter_ecatalog/module/home/controller/home_controller.dart';
+import 'package:flutter_ecatalog/module/login/view/login_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);

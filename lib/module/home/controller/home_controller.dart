@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecatalog/bloc/products/products_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/get_products/products_bloc.dart';
 import 'package:flutter_ecatalog/state_util.dart';
 
 import '../view/home_view.dart';

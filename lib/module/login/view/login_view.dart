@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecatalog/bloc/login/login_bloc.dart';
+import 'package:flutter_ecatalog/bloc/auth/login/login_bloc.dart';
 import 'package:flutter_ecatalog/core.dart';
+import 'package:flutter_ecatalog/data/datasources/local_datasource.dart';
+import 'package:flutter_ecatalog/data/models/request/login_request_model.dart';
+import 'package:flutter_ecatalog/module/home/view/home_view.dart';
+import 'package:flutter_ecatalog/module/login/controller/login_controller.dart';
+import 'package:flutter_ecatalog/module/register/view/register_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);

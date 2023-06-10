@@ -1,14 +1,13 @@
+import 'package:flutter_ecatalog/bloc/auth/login/login_bloc.dart';
+import 'package:flutter_ecatalog/bloc/auth/register/register_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/add_product/add_product_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/get_products/products_bloc.dart';
 import 'package:flutter_ecatalog/module/login/view/login_view.dart';
 import 'package:flutter_ecatalog/state_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecatalog/bloc/add_product/add_product_bloc.dart';
-import 'package:flutter_ecatalog/bloc/products/products_bloc.dart';
 import 'package:flutter_ecatalog/data/datasources/auth_datasource.dart';
 import 'package:flutter_ecatalog/data/datasources/product_datasource.dart';
-
-import 'bloc/login/login_bloc.dart';
-import 'bloc/register/register_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter Platzi Catalog',
         navigatorKey: Get.navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecatalog/bloc/register/register_bloc.dart';
+import 'package:flutter_ecatalog/bloc/auth/register/register_bloc.dart';
 import 'package:flutter_ecatalog/core.dart';
+import 'package:flutter_ecatalog/data/models/request/register_request_model.dart';
+import 'package:flutter_ecatalog/module/login/view/login_view.dart';
+import 'package:flutter_ecatalog/module/register/controller/register_controller.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
