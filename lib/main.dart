@@ -1,7 +1,9 @@
 import 'package:flutter_ecatalog/bloc/auth/login/login_bloc.dart';
 import 'package:flutter_ecatalog/bloc/auth/register/register_bloc.dart';
 import 'package:flutter_ecatalog/bloc/product/add_product/add_product_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/get_pagination_product/get_pagination_product_bloc.dart';
 import 'package:flutter_ecatalog/bloc/product/get_products/products_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/update_product/update_product_bloc.dart';
 import 'package:flutter_ecatalog/module/login/view/login_view.dart';
 import 'package:flutter_ecatalog/state_util.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LoginBloc(AuthDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => GetPaginationProductBloc(ProductDataSource()),
+        ),
+        BlocProvider(
+          create: (context) => UpdateProductBloc(ProductDataSource()),
         ),
         BlocProvider(
           create: (context) => ProductsBloc(ProductDataSource()),

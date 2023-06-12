@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecatalog/bloc/product/add_product/add_product_bloc.dart';
 import 'package:flutter_ecatalog/bloc/product/get_products/products_bloc.dart';
+import 'package:flutter_ecatalog/bloc/product/update_product/update_product_bloc.dart';
 import 'package:flutter_ecatalog/core.dart';
 import 'package:flutter_ecatalog/data/models/request/product_request_model.dart';
 import 'package:flutter_ecatalog/module/home/controller/home_controller.dart';
@@ -12,6 +13,97 @@ class HomeView extends StatefulWidget {
 
   Widget build(context, HomeController controller) {
     controller.view = this;
+
+    Widget _updateProduct({
+      required int id,
+      required String title,
+      required int price,
+      required String description,
+    }) {
+      return AlertDialog(
+        title: const Text('Update Product'),
+        content: Form(
+          key: controller.formUpdateKey,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            TextField(
+              controller: controller.titleUpdateController,
+              decoration: const InputDecoration(labelText: 'Title'),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            TextField(
+              controller: controller.priceUpdateController,
+              decoration: const InputDecoration(labelText: 'Price'),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            TextField(
+              controller: controller.descriptionUpdateController,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+          ]),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          const SizedBox(
+            width: 5.0,
+          ),
+          BlocConsumer<UpdateProductBloc, UpdateProductState>(
+            listener: (context, state) {
+              if (state is UpdateProductLoaded) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Product updated successfully')),
+                );
+                // Refresh the product list after the update
+                controller.refresh(context);
+                Navigator.pop(context);
+              } else if (state is UpdateProductError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed to update product: ${state.message}'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed to update product'),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is UpdateProductLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ElevatedButton(
+                onPressed: () {
+                  if (controller.formUpdateKey.currentState!.validate()) {
+                    controller.updateProduct(
+                      context,
+                      controller.titleUpdateController!.text,
+                      int.parse(controller.priceUpdateController!.text),
+                      controller.descriptionUpdateController!.text,
+                      id,
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Update'),
+              );
+            },
+          ),
+        ],
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -40,11 +132,29 @@ class HomeView extends StatefulWidget {
               child: ListView.builder(
                 // reverse: true,
                 itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                          state.data.reversed.toList()[index].title ?? '-'),
-                      subtitle: Text('${state.data[index].price}\$'),
+                  final product = state.data.reversed.toList()[index];
+                  return InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          // update
+                          return _updateProduct(
+                            id: product.id!,
+                            title: product.title ?? '',
+                            price: product.price ?? 0,
+                            description: product.description ?? '',
+                          );
+                        },
+                      );
+                    },
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                            state.data.reversed.toList()[index].title ?? '-'),
+                        subtitle: Text('${state.data[index].price}\$'),
+                        trailing: Text('${state.data[index].description}\$'),
+                      ),
                     ),
                   );
                 },

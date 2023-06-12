@@ -49,4 +49,29 @@ class ProductDataSource {
       return const Left('get product error');
     }
   }
+
+  Future<Either<String, ProductResponseModel>> updateProduct(
+      ProductRequestModel model, int id) async {
+    // header
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final body = jsonEncode(model.toMap());
+    print(body);
+    final response = await http.put(
+      Uri.parse('https://api.escuelajs.co/api/v1/products/$id'),
+      // body: model.toJson(),
+      body: body,
+      headers: headers,
+    );
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return Right(ProductResponseModel.fromJson(response.body));
+    } else {
+      return const Left('error update product');
+    }
+  }
 }

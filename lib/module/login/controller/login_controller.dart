@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecatalog/core.dart';
 import 'package:flutter_ecatalog/data/datasources/local_datasource.dart';
+import 'package:flutter_ecatalog/module/home/view/home_view.dart';
 import 'package:flutter_ecatalog/state_util.dart';
 import '../view/login_view.dart';
 
