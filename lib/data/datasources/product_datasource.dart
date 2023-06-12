@@ -30,4 +30,23 @@ class ProductDataSource {
       return const Left('error add product');
     }
   }
+
+  Future<Either<String, List<ProductResponseModel>>> getAllProductPagination(
+      int page, int limit) async {
+    final response = await http.get(
+      // Uri.parse('https://api.escuelajs.co/api/v1/products?offset=0&limit=10'),
+      Uri.parse(
+          'https://api.escuelajs.co/api/v1/products?offset=${page * limit}&limit=${limit}'),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    if (response.statusCode == 200) {
+      return Right(List<ProductResponseModel>.from(jsonDecode(response.body)
+          .map((x) => ProductResponseModel.fromMap(x))));
+      // return Right(List<ProductResponseModel>.from(jsonDecode(response.body)));
+    } else {
+      return const Left('get product error');
+    }
+  }
 }
